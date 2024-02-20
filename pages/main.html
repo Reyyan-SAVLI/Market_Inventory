@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="modal">
+  
+  <form class="modal-main" method="post" action="/main">
+    <div class="container-mainf">
+    <button name="products" onclick="showContent('products')">Ürünler</button>
+    <button name="markets" onclick="showContent('markets')">Marketler</button>
+    <button name="storage">Depolar</button>
+    <button name="center-stock">Merkez Stok</button>
+    <button name="profile">Profilim</button>
+    </div>
+    <div class="container-main products">
+    <input type="text" style="background-color: yellow;">
+    </div>
+    <div class="container-main markets">
+    <input type="text" style="background-color: red;">
+    </div>
+   
+  </form>
+</div>
+<script>
+    function showContent(contentName){
+        var allContents = document.querySelectorAll('.container-main');
+        allContents.forEach(function(content){
+            content.classList.remove('active');
+        });
+        var selectedContent = document.querySelector('.' + contentName);
+        selectedContent.classList.add('active');
+    }
+</script>
+</body>
+</html>
