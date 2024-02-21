@@ -1,37 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="modal">
-  
-  <form class="modal-main" method="post" action="/main">
-    <div class="container-mainf">
-    <button name="products" onclick="showContent('products')">Ürünler</button>
-    <button name="markets" onclick="showContent('markets')">Marketler</button>
-    <button name="storage">Depolar</button>
-    <button name="center-stock">Merkez Stok</button>
-    <button name="profile">Profilim</button>
+<div >
+  <form  method="post" action="/main">
+    <div class="bs-component">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showForm('form-products')">Ürünler</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showForm('form-markets')">Marketler</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showForm('form-storages')">Depolar</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showForm('form-stock')">Merkez Stok</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showForm('form-profile')">Profilim</a></li>
+      </ul>
     </div>
-    <div class="container-main products">
-    <input type="text" style="background-color: yellow;">
+  </form>
+
+  <form id="form-products" class="form-container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tile">
+          <div class="tile-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-bordered" id="sampleTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Age</th>
+                    <th>Start date</th>
+                    <th>Salary</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="container-main markets">
-    <input type="text" style="background-color: red;">
-    </div>
-   
+  </form>
+
+  <form id="form-markets" class="form-container">
+    ffgdfafsdafdasf
+  </form>
+
+  <form id="form-markets" class="form-container">
+    ffgdfafsdafdasf
+  </form>
+     
+  <form id="form-markets" class="form-container">
+    ffgdfafsdafd
+  </form>
+
+  <form id="form-markets" class="form-container">
+    ffgdfafsdafdasf
   </form>
 </div>
+<script src="js/jquery-3.7.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
 <script>
-    function showContent(contentName){
-        var allContents = document.querySelectorAll('.container-main');
-        allContents.forEach(function(content){
-            content.classList.remove('active');
-        });
-        var selectedContent = document.querySelector('.' + contentName);
-        selectedContent.classList.add('active');
+  function showForm(formId) {
+      // Tüm formları gizle
+      document.querySelectorAll('.form-container').forEach(form => {
+        form.classList.remove('active-form');
+      });
+
+      // İlgili formu göster
+      var formToShow = document.getElementById(formId);
+      if (formToShow) {
+        formToShow.classList.add('active-form');
+      }
     }
 </script>
 </body>

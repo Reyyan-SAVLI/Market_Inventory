@@ -28,20 +28,10 @@ button:hover {
 .container {
   padding: 16px;
 }
-.container-mainf{
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  
-}
 .container-main{
-  display: flex;
-  justify-content: space-between;
+  
+  
   margin-bottom: 15px;
-  display: none;
-}
-.active{
-  display: block;
 }
 
 span.psw {
@@ -74,4 +64,8 @@ span.psw {
   background-color: white;
   margin: 30% auto 30% auto; /* 5% from the top, 15% from the bottom and centered */
   width: 80%; /* Could be more or less, depending on screen size */
+}
+
+#form-products{
+  display: none;
 }

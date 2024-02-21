@@ -7,6 +7,7 @@ const port = 3000;
 
 app.use(express.static(path.join(__dirname, 'pages')));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use((express.urlencoded({extended: true})));
 
 app.get('/', (req, res)=>{
   const filePath = path.join(__dirname, 'pages/login.html');
@@ -41,6 +42,19 @@ app.get('/main', (req, res)=>{
       console.log(err);
     }
    });
+});
+
+app.post('/main', (req, res)=>{
+  
+});
+
+app.get('/products', (req, res)=>{
+  const filePath = path.join(__dirname, 'pages/main.html');
+  res.sendFile(filePath, (err)=>{
+   if(err){
+     console.log(err);
+   }
+  });
 });
 
 app.listen(port, () => {
