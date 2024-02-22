@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div >
+  <form  method="post" action="/profile" class="form-container" >
+    <div class="bs-component">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a class="nav-link" href="/main">Ürünler</a></li>
+        <li class="nav-item"><a class="nav-link" href="/markets">Marketler</a></li>
+        <li class="nav-item"><a class="nav-link" href="/storages">Depolar</a></li>
+        <li class="nav-item"><a class="nav-link" href="/stock">Merkez Stok</a></li>
+        <li class="nav-item"><a class="nav-link" href="/profile">Profilim</a></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tile">
+          <div class="tile-body">
+            <div class="tile">
+                <div class="tile-title-w-btn">
+                  <h3 class="title">Profil Bilgileri</h3>
+                  <div class="btn-group">
+                    <button id="editButton" class="btn btn-primary" onclick="enableEditing()"><i class="bi bi-pencil-square fs-5"></i></button>
+                  </div>
+                </div>
+                <div class="tile-body">
+                    <div class="mb-3 row">
+                        <label class="form-label col-md-3">İsim</label>
+                        <div class="col-md-8">
+                          <input class="form-control" type="text" id="txtname" readonly>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="form-label col-md-3">Soyisim</label>
+                        <div class="col-md-8">
+                          <input class="form-control" type="text" id="txtsurname" readonly>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="form-label col-md-3">Email</label>
+                        <div class="col-md-8">
+                          <input class="form-control col-md-8" type="email" id="txtemail" readonly>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="form-label col-md-3">Telefon</label>
+                        <div class="col-md-8">
+                          <input class="form-control" type="text" id="txtphone" readonly>
+                        </div>
+                    </div> 
+                    <div class="mb-3 row">
+                        <label class="form-label col-md-3">Şifre</label>
+                        <div class="col-md-8">
+                          <input class="form-control" type="password" id="txtpsw" readonly>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button id="editButton" class="btn btn-primary" >Değişiklikleri Kaydet</button>
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+     
+  </form>
+</div>
+<script src="js/jquery-3.7.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+      fetch('/profile/data')
+        .then(response => response.json())
+        .then(data => {
+         const user = data[0];
+         document.getElementById('txtname').value = user.name;
+         document.getElementById('txtsurname').value = user.surname;
+         document.getElementById('txtemail').value = user.email;
+         document.getElementById('txtphone').value = user.phone;
+         document.getElementById('txtpsw').value = user.password;
+        })
+        .catch(error => console.error('Error: ', error));
+    });
+    function enableEditing() {
+        document.getElementById('txtname').readOnly = false;
+        document.getElementById('txtsurname').readOnly = false;
+        document.getElementById('txtemail').readOnly = false;
+        document.getElementById('txtphone').readOnly = false;
+        document.getElementById('txtpsw').readOnly = false;
+
+        document.getElementById('editButton').disabled = true;
+    }
+  </script>
+</body>
+</html>

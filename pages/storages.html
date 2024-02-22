@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div >
+  <form  method="post" action="/storages" class="form-container" >
+    <div class="bs-component">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a class="nav-link" href="/main">Ürünler</a></li>
+        <li class="nav-item"><a class="nav-link" href="/markets">Marketler</a></li>
+        <li class="nav-item"><a class="nav-link" href="/storages">Depolar</a></li>
+        <li class="nav-item"><a class="nav-link" href="/stock">Merkez Stok</a></li>
+        <li class="nav-item"><a class="nav-link" href="/profile">Profilim</a></li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tile">
+          <div class="tile-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-bordered" id="sampleTable">
+                <thead>
+                  <tr>
+                    <th>Depo Adı</th>
+                    <th>Depo Kodu</th>
+                    <th>İl</th>
+                    <th>İlçe</th>
+                    <th>Adres</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script src="js/jquery-3.7.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+      fetch('/storages/data')
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.querySelector('#sampleTable tbody');
+  
+          data.forEach(product => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${product.name}</td>
+              <td>${product.storagecode}</td>
+              <td>${product.city}</td>
+              <td>${product.province}</td>
+              <td>${product.address}</td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error: ', error));
+    });
+  </script>
+</body>
+</html>

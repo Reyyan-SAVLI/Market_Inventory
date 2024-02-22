@@ -1,8 +1,4 @@
 @charset "UTF-8";
-/*!
- * Vali Admin
- * Author: Pratik Borsadiya
- * ================================*/
 @import url(https://fonts.googleapis.com/css?family=Lato:300,400,400i,700);
 @import url(https://fonts.googleapis.com/css?family=Niconne);
 /*!
@@ -4158,12 +4154,6 @@ textarea.form-control-lg {
 .btn-group-vertical > .btn-group:not(:first-child) > .btn {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-}
-.form-container{
-  display: none;
-}
-.active-form{
-  display: block;
 }
 .nav {
   --bs-nav-link-padding-x: 3rem;

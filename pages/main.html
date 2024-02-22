@@ -7,19 +7,16 @@
 </head>
 <body>
 <div >
-  <form  method="post" action="/main">
+  <form  method="post" action="/main" class="form-container" >
     <div class="bs-component">
       <ul class="nav nav-pills">
-        <li class="nav-item"><a class="nav-link" href="#" onclick="showForm('form-products')">Ürünler</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" onclick="showForm('form-markets')">Marketler</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" onclick="showForm('form-storages')">Depolar</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" onclick="showForm('form-stock')">Merkez Stok</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" onclick="showForm('form-profile')">Profilim</a></li>
+        <li class="nav-item"><a class="nav-link" href="/main">Ürünler</a></li>
+        <li class="nav-item"><a class="nav-link" href="/markets">Marketler</a></li>
+        <li class="nav-item"><a class="nav-link" href="/storages">Depolar</a></li>
+        <li class="nav-item"><a class="nav-link" href="/stock">Merkez Stok</a></li>
+        <li class="nav-item"><a class="nav-link" href="/profile">Profilim</a></li>
       </ul>
     </div>
-  </form>
-
-  <form id="form-products" class="form-container">
     <div class="row">
       <div class="col-md-12">
         <div class="tile">
@@ -28,12 +25,16 @@
               <table class="table table-hover table-bordered" id="sampleTable">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
+                    <th>Ürün Adı</th>
+                    <th>Ürün Kodu</th>
+                    <th>Resim</th>
+                    <th>Marka</th>
+                    <th>Barkod</th>
+                    <th>Fiyat</th>
+                    <th>KDV Oranı(%)</th>
+                    <th>Miktar</th>
+                    <th>Kategori</th>
+                    <th>Alt Kategori</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -45,39 +46,36 @@
       </div>
     </div>
   </form>
-
-  <form id="form-markets" class="form-container">
-    ffgdfafsdafdasf
-  </form>
-
-  <form id="form-markets" class="form-container">
-    ffgdfafsdafdasf
-  </form>
-     
-  <form id="form-markets" class="form-container">
-    ffgdfafsdafd
-  </form>
-
-  <form id="form-markets" class="form-container">
-    ffgdfafsdafdasf
-  </form>
 </div>
 <script src="js/jquery-3.7.0.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/main.js"></script>
 <script>
-  function showForm(formId) {
-      // Tüm formları gizle
-      document.querySelectorAll('.form-container').forEach(form => {
-        form.classList.remove('active-form');
-      });
+  document.addEventListener('DOMContentLoaded', function(){
+    fetch('/main/data')
+      .then(response => response.json())
+      .then(data => {
+        const tableBody = document.querySelector('#sampleTable tbody');
 
-      // İlgili formu göster
-      var formToShow = document.getElementById(formId);
-      if (formToShow) {
-        formToShow.classList.add('active-form');
-      }
-    }
+        data.forEach(product => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${product.name}</td>
+            <td>${product.productcode}</td>
+            <td><img src="${product.imagepath}" alt="Product Image"></td>
+            <td>${product.brand}</td>
+            <td>${product.barcode}</td>
+            <td>${product.price}</td>
+            <td>${product.kdvratio}</td>
+            <td>${product.amount}</td>
+            <td>${product.category}</td>
+            <td>${product.subcategory}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      })
+      .catch(error => console.error('Error: ', error));
+  });
 </script>
 </body>
 </html>
