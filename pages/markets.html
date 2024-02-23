@@ -40,11 +40,46 @@
         </div>
       </div>
     </div>
+    <!-- <div class="row">
+      <div class="col-md-12">
+        <div class="tile">
+          <div class="tile-body">
+            <div class="table-responsive">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">İl Seçin</a>
+               <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Adana</a>
+                <a class="dropdown-item" href="#">Bingöl</a>
+                <a class="dropdown-item" href="#">Malatya</a>
+              </li>
+              <table class="table table-hover table-bordered" id="sampleTable">
+                <thead>
+                  <tr>
+                    <th>Market Adı</th>
+                    <th>Market Kodu</th>
+                    <th>İl</th>
+                    <th>İlçe</th>
+                    <th>Adres</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
   </form>
 </div>
 <script src="js/jquery-3.7.0.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/main.js"></script>
+<!-- Page specific javascripts-->
+<link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css">
+<!-- Data table plugin-->
+<script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript">$('#sampleTable').DataTable();</script>
 <script>
     document.addEventListener('DOMContentLoaded', function(){
       fetch('/markets/data')

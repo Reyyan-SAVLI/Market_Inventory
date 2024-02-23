@@ -3,9 +3,13 @@ const path = require('path');
 const app = express();
 const db = require('./models/conn');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const { name } = require('ejs');
+const { error } = require('console');
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, 'pages')));
+app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use((express.urlencoded({extended: true})));
 
@@ -123,10 +127,53 @@ app.get('/profile/data', (req, res)=>{
    db.query(sql, (err, result)=>{
      if(err) throw err;
 
-     console.log(result);
      res.json(result);
    })
   });
+
+  app.get('/addproduct', (req, res)=>{
+    const filePath = path.join(__dirname, 'pages/addproduct.html');
+    res.sendFile(filePath, (err)=>{
+     if(err){
+       console.log(err);
+     }
+    });
+  });
+
+  app.post('/addproduct', (req, res) => {
+    const pName = req.body.pName;
+    const pBrand = req.body.pBrand;
+    const pBarcode = req.body.pBarcode;
+    const pPrice = req.body.pPrice;
+    const pKdv = req.body.pKdv;
+    const pCode = req.body.pCode;
+    const pAmount = req.body.pAmount;
+    const pCategory = req.body.pCategory;
+    const pSubcategory = req.body.pSubcategory;
+    const pImage = `/assets/${req.files.pImage.name}`;
+    const sql = 'INSERT INTO products (name, imagepath, brand, barcode, price, kdvratio, productcode, amount, category, subcategory) VALUES (?,?,?,?,?,?,?,?,?,?)';
+  
+    // Dikkat: Burada `!==` kullanılmalı, yanlış bir atama kontrolü yapılıyor.
+    if (req.files.pImage.mimetype !== 'image/jpeg') {
+      return res.status(400).send('Sadece JPG formatlı resimler kabul edilir.');
+    }
+  
+    req.files.pImage.mv(__dirname + '/pages/assets/' + req.files.pImage.name, (mvErr) => {
+      if (mvErr) {
+        return res.status(500).send(mvErr);
+      }
+  
+      db.query(sql, [pName, pImage, pBrand, pBarcode, pPrice, pKdv, pCode, pAmount, pCategory, pSubcategory], (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).send('Veritabanına kaydedilirken bir hata oluştu.');
+        }
+        console.log('Kayıt Oluşturuldu');
+        res.redirect('/main');
+      });
+    });
+  });
+  
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
