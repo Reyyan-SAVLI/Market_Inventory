@@ -45,27 +45,32 @@
 <script src="js/jquery-3.7.0.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/main.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css">
+<script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function(){
-      fetch('/stock/data')
-        .then(response => response.json())
-        .then(data => {
-          const tableBody = document.querySelector('#sampleTable tbody');
-  
-          data.forEach(product => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>${product.name}</td>
-              <td>${product.storagecode}</td>
-              <td>${product.marketcode}</td>
-              <td>${product.city}</td>
-              <td>${product.amount}</td>
-            `;
-            tableBody.appendChild(row);
-          });
-        })
-        .catch(error => console.error('Error: ', error));
+  $(document).ready(function() {
+    var table = $('#sampleTable').DataTable({});
+    $.ajax({
+        url: '/stock/data',  // Verilerin alındığı endpoint
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Verileri tabloya ekle
+            for (var i = 0; i < data.length; i++) {
+                table.row.add([
+                    data[i].name,
+                    data[i].storagecode,
+                    data[i].marketcode,
+                    data[i].marketcity,
+                    data[i].amount,
+                ]).draw();
+            }
+        },
+        error: function(error) {
+            console.error('Veri alınamadı:', error);
+        }
     });
-  </script>
+});
+</script>
 </body>
 </html>

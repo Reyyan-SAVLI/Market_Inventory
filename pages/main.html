@@ -51,32 +51,37 @@
 <script src="js/jquery-3.7.0.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/main.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css">
+<script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function(){
-    fetch('/main/data')
-      .then(response => response.json())
-      .then(data => {
-        const tableBody = document.querySelector('#sampleTable tbody');
-
-        data.forEach(product => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${product.name}</td>
-            <td>${product.productcode}</td>
-            <td><img src="${product.imagepath}" alt="Product Image"style="max-width: 100px; max-height: 100px;"></td>
-            <td>${product.brand}</td>
-            <td>${product.barcode}</td>
-            <td>${product.price}</td>
-            <td>${product.kdvratio}</td>
-            <td>${product.amount}</td>
-            <td>${product.category}</td>
-            <td>${product.subcategory}</td>
-          `;
-          tableBody.appendChild(row);
-        });
-      })
-      .catch(error => console.error('Error: ', error));
-  });
+  $(document).ready(function() {
+    var table = $('#sampleTable').DataTable({});
+    $.ajax({
+        url: '/main/data',  // Verilerin alındığı endpoint
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Verileri tabloya ekle
+            for (var i = 0; i < data.length; i++) {
+                table.row.add([
+                    data[i].name,
+                    data[i].productcode,
+                    '<img src="' + data[i].imagepath + '" alt="Product Image" style="max-width: 100px; max-height: 100px;">',
+                    data[i].brand,
+                    data[i].barcode,
+                    data[i].price + ' TL',
+                    data[i].kdvratio,
+                    data[i].amount,
+                    data[i].category,
+                    data[i].subcategory,
+                ]).draw();
+            }
+        },
+        error: function(error) {
+            console.error('Veri alınamadı:', error);
+        }
+    });
+});
 </script>
 </body>
 </html>
