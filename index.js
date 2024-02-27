@@ -47,7 +47,7 @@ app.get('/main', (req, res)=>{
 });
 
 app.get('/main/data', (req, res)=>{
-  const sql = 'SELECT * FROM products';
+  const sql = 'SELECT * FROM products_main';
    db.query(sql, (err, result)=>{
      if(err) throw err;
 
@@ -65,7 +65,7 @@ app.get('/markets', (req, res)=>{
 });
 
 app.get('/markets/data', (req, res)=>{
-  const sql = 'SELECT * FROM markets m INNER JOIN products p ON m.productid = p.id';
+  const sql = 'SELECT * FROM markets m INNER JOIN products_market p ON m.id = p.market_id';
    db.query(sql, (err, result)=>{
      if(err){
       throw err;
@@ -75,7 +75,21 @@ app.get('/markets/data', (req, res)=>{
      }
      
    })
+});
+
+app.post('/markets', (req,res)=>{
+  const sql = 'UPDATE products SET amount = ? WHERE id = ?';
+  const newAmonut = req.body.txtamount;
+  const pId = req.body.pId;
+
+  for (var i = 0; i < newAmonut.length; i++) {
+    db.query(sql, [newAmonut[i], pId[i]], (err, result)=>{
+    if(err) throw err;
   });
+  }
+    console.log('Veritabanı güncellendi.');
+    res.redirect('/markets');
+});
 
 app.get('/storages', (req, res)=>{
   const filePath = path.join(__dirname, 'pages/storages.html');
@@ -87,7 +101,7 @@ app.get('/storages', (req, res)=>{
 });
 
 app.get('/storages/data', (req, res)=>{
-  const sql = 'SELECT * FROM storages s INNER JOIN products p ON s.productid = p.id';
+  const sql = 'SELECT * FROM storages s INNER JOIN products_storage p ON s.id = p.storage_id';
    db.query(sql, (err, result)=>{
      if(err) throw err;
 
@@ -105,7 +119,13 @@ app.get('/stock', (req, res)=>{
 });
 
 app.get('/stock/data', (req, res)=>{
-  const sql = 'SELECT * FROM storages s INNER JOIN markets m ON s.marketid = m.id INNER JOIN products p ON s.productid = p.id ';
+  const sql = 'SELECT DISTINCT p.productcode, p.name, p.amount, m.marketname, m.marketcode , pm.products_market_amount,'+
+  'ps.products_storage_amount , s.storagename ,s.storagecode FROM main_stock a INNER JOIN '+ 
+  'products_main p ON p.id = a.product_id INNER JOIN '+
+  'markets m ON m.id = a.market_id INNER JOIN '+
+  'storages s ON s.id = a.storage_id INNER JOIN '+
+  'products_market pm ON pm.market_id = m.id INNER JOIN '+
+  'products_storage ps ON ps.storage_id = s.id';
    db.query(sql, (err, result)=>{
      if(err) throw err;
 
@@ -131,7 +151,7 @@ app.get('/profile/data', (req, res)=>{
 
      res.json(result);
    })
-  });
+});
 
   app.post('/profile', (req, res)=>{
    const sql = 'UPDATE users SET name = ?, surname = ?, email = ?, phone = ?, password = ? ';
@@ -168,7 +188,7 @@ app.get('/profile/data', (req, res)=>{
     const pCategory = req.body.pCategory;
     const pSubcategory = req.body.pSubcategory;
     const pImage = `/assets/${req.files.pImage.name}`;
-    const sql = 'INSERT INTO products (name, imagepath, brand, barcode, price, kdvratio, productcode, amount, category, subcategory) VALUES (?,?,?,?,?,?,?,?,?,?)';
+    const sql = 'INSERT INTO products_main (name, imagepath, brand, barcode, price, kdvratio, productcode, amount, category, subcategory) VALUES (?,?,?,?,?,?,?,?,?,?)';
   
     if (req.files.pImage.mimetype !== 'image/jpeg') {
       return res.status(400).send('Sadece JPG formatlı resimler kabul edilir.');

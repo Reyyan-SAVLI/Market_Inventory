@@ -27,11 +27,12 @@
                   <tr>
                     <th>Depo Adı</th>
                     <th>Depo Kodu</th>
-                    <th>Ürün Adı</th>
-                    <th>Ürün Miktarı</th>
                     <th>İl</th>
                     <th>İlçe</th>
                     <th>Adres</th>
+                    <th>Ürün Adı</th>
+                    <th>Ürün Kodu</th>
+                    <th>Ürün Miktarı</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -62,11 +63,12 @@
                 table.row.add([
                     data[i].storagename,
                     data[i].storagecode,
-                    data[i].name,
-                    data[i].amount,
                     data[i].storagecity,
                     data[i].storageprovince,
                     data[i].storageaddress,
+                    data[i].products_storage_name,
+                    data[i].products_storage_productcode,
+                    data[i].products_storage_amount
                 ]).draw();
             }
         },

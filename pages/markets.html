@@ -27,11 +27,12 @@
                   <tr>
                     <th>Market Adı</th>
                     <th>Market Kodu</th>
-                    <th>Ürün Adı</th>
-                    <th>Ürün Miktarı</th>
                     <th>İl</th>
                     <th>İlçe</th>
                     <th>Adres</th>
+                    <th>Ürün Adı</th>
+                    <th>Ürün Kodu</th>
+                    <th>Ürün Miktarı</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -44,7 +45,7 @@
     </div>
     <div class="row">
       <textarea id="lblamount" readonly></textarea>
-      <button class="btn btn-primary">Stok arttır</button>
+      <button class="btn btn-primary" id="updateAmount">Stok arttır</button>
     </div>
   </form>
 </div>
@@ -66,22 +67,25 @@
                 table.row.add([
                     data.marketData[i].marketname,
                     data.marketData[i].marketcode,
-                    data.marketData[i].name,
-                    data.marketData[i].amount,
                     data.marketData[i].marketcity,
                     data.marketData[i].marketprovince,
                     data.marketData[i].marketaddress,
+                    data.marketData[i].products_market_name,
+                    data.marketData[i].products_market_productcode,
+                    '<input type="text" name="txtamount" value="'+data.marketData[i].products_market_amount+'">',
                 ]).draw();
             }
             var lblAmount = document.getElementById('lblamount');
             data.itemsBelow100.forEach(item => {
               lblAmount.value += `Azalmış stok:  ${item.name} - Miktarı: ${item.amount}\n`;
             });
+            
         },
         error: function(error) {
             console.error('Veri alınamadı:', error);
         }
     });
+
 });
 </script>
 </body>
