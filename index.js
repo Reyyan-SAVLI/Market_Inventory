@@ -52,7 +52,7 @@ app.get('/main/data', (req, res)=>{
      if(err) throw err;
 
      res.json(result);
-   })
+   });
   });
 
 app.get('/markets', (req, res)=>{
@@ -67,28 +67,41 @@ app.get('/markets', (req, res)=>{
 app.get('/markets/data', (req, res)=>{
   const sql = 'SELECT * FROM markets m INNER JOIN products_market p ON m.id = p.market_id';
    db.query(sql, (err, result)=>{
-     if(err){
-      throw err;
-     }else{
-      const itemsBelow100 = result.filter(item => item.amount < 100);
-            res.json({ marketData: result, itemsBelow100 });
-     }
-     
-   })
+     if(err) throw err;
+
+     res.json(result);
+   });
 });
 
-app.post('/markets', (req,res)=>{
-  const sql = 'UPDATE products SET amount = ? WHERE id = ?';
-  const newAmonut = req.body.txtamount;
-  const pId = req.body.pId;
+app.get('/updatemarket', (req, res)=>{
+    const filePath = path.join(__dirname, 'pages/updatemarket.html');
+    res.sendFile(filePath, (err)=>{
+     if(err){
+       console.log(err);
+     }
+    });
+});
+  
+app.post('/updatemarket', (req, res)=>{
+    const pMCode = req.body.pMCode;
+    const pMAmount = req.body.pMAmount;
+    const mCode = req.body.mCode;
+    const sql = 'UPDATE markets INNER JOIN products_market ON markets.id = products_market.market_id '+
+    'SET products_market_amount = products_market_amount + ? WHERE products_market_productcode = ? AND marketcode = ?';
+    const sql2 = 'UPDATE storages INNER JOIN markets ON storages.id = markets.storage_id '+
+    'INNER JOIN products_storage ON products_storage.storage_id = storages.id '+
+    'SET products_storage.products_storage_amount = products_storage.products_storage_amount - ? '+
+    'WHERE products_storage.products_storage_productcode = ? AND markets.marketcode = ?';
+    db.query(sql, [pMAmount,pMCode,mCode], (err, result)=>{
+       if(err) throw err;
+      
+       db.query(sql2, [pMAmount, pMCode, mCode], (err, result)=>{
+        if(err) throw err;
+        
+        res.redirect('/markets');
+       });
+    });
 
-  for (var i = 0; i < newAmonut.length; i++) {
-    db.query(sql, [newAmonut[i], pId[i]], (err, result)=>{
-    if(err) throw err;
-  });
-  }
-    console.log('Veritabanı güncellendi.');
-    res.redirect('/markets');
 });
 
 app.get('/storages', (req, res)=>{
@@ -107,7 +120,37 @@ app.get('/storages/data', (req, res)=>{
 
      res.json(result);
    })
-  });
+});
+
+app.get('/updatestorage', (req, res)=>{
+    const filePath = path.join(__dirname, 'pages/updatestorage.html');
+    res.sendFile(filePath, (err)=>{
+     if(err){
+       console.log(err);
+     }
+    });
+});
+
+app.post('/updatestorage', (req, res)=>{
+    const pSCode = req.body.pSCode;
+    const pSAmount = req.body.pSAmount;
+    const sCode = req.body.sCode;
+    const sql = 'UPDATE products_storage INNER JOIN storages ON products_storage.storage_id = storages.id '+
+    'SET products_storage_amount = products_storage_amount + ? WHERE products_storage_productcode = ? AND storagecode = ?';
+    const sql2 = 'UPDATE main_stock INNER JOIN products_main ON main_stock.product_id = products_main.id INNER JOIN '+
+    'storages ON main_stock.storage_id = storages.id SET amount = amount - ? '+
+    'WHERE productcode = ? AND storagecode = ?';
+    db.query(sql, [pSAmount,pSCode,sCode], (err, result)=>{
+      if(err) throw err;
+     
+      db.query(sql2, [pSAmount, pSCode, sCode], (err, result)=>{
+       if(err) throw err;
+       
+       res.redirect('/storages');
+      });
+   });
+
+});
 
 app.get('/stock', (req, res)=>{
   const filePath = path.join(__dirname, 'pages/stock.html');
@@ -153,7 +196,7 @@ app.get('/profile/data', (req, res)=>{
    })
 });
 
-  app.post('/profile', (req, res)=>{
+app.post('/profile', (req, res)=>{
    const sql = 'UPDATE users SET name = ?, surname = ?, email = ?, phone = ?, password = ? ';
    const name = req.body.txtname;
    const surname = req.body.txtsurname;
@@ -166,18 +209,18 @@ app.get('/profile/data', (req, res)=>{
      res.redirect('/profile');
      console.log('Bilgiler güncellendi.');
    });
-  });
+});
 
-  app.get('/addproduct', (req, res)=>{
+app.get('/addproduct', (req, res)=>{
     const filePath = path.join(__dirname, 'pages/addproduct.html');
     res.sendFile(filePath, (err)=>{
      if(err){
        console.log(err);
      }
     });
-  });
+});
 
-  app.post('/addproduct', (req, res) => {
+app.post('/addproduct', (req, res) => {
     const pName = req.body.pName;
     const pBrand = req.body.pBrand;
     const pBarcode = req.body.pBarcode;
@@ -208,9 +251,8 @@ app.get('/profile/data', (req, res)=>{
         res.redirect('/main');
       });
     });
-  });
-  
-
+});
+ 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

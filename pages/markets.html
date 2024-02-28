@@ -22,6 +22,7 @@
         <div class="tile">
           <div class="tile-body">
             <div class="table-responsive">
+              <p><a class="btn btn-primary icon-btn" href="updatemarket.html">Stok Güncelle</a></p>
               <table class="table table-hover table-bordered" id="sampleTable">
                 <thead>
                   <tr>
@@ -43,10 +44,6 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <textarea id="lblamount" readonly></textarea>
-      <button class="btn btn-primary" id="updateAmount">Stok arttır</button>
-    </div>
   </form>
 </div>
 <script src="js/jquery-3.7.0.min.js"></script>
@@ -63,23 +60,18 @@
         dataType: 'json',
         success: function(data) {
             // Verileri tabloya ekle
-            for (var i = 0; i < data.marketData.length; i++) {
+            for (var i = 0; i < data.length; i++) {
                 table.row.add([
-                    data.marketData[i].marketname,
-                    data.marketData[i].marketcode,
-                    data.marketData[i].marketcity,
-                    data.marketData[i].marketprovince,
-                    data.marketData[i].marketaddress,
-                    data.marketData[i].products_market_name,
-                    data.marketData[i].products_market_productcode,
-                    '<input type="text" name="txtamount" value="'+data.marketData[i].products_market_amount+'">',
+                    data[i].marketname,
+                    data[i].marketcode,
+                    data[i].marketcity,
+                    data[i].marketprovince,
+                    data[i].marketaddress,
+                    data[i].products_market_name,
+                    data[i].products_market_productcode,
+                    data[i].products_market_amount,
                 ]).draw();
             }
-            var lblAmount = document.getElementById('lblamount');
-            data.itemsBelow100.forEach(item => {
-              lblAmount.value += `Azalmış stok:  ${item.name} - Miktarı: ${item.amount}\n`;
-            });
-            
         },
         error: function(error) {
             console.error('Veri alınamadı:', error);
