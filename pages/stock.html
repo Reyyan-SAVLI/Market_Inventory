@@ -51,34 +51,6 @@
 <script src="js/main.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css">
 <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
-<script>
-  $(document).ready(function() {
-    var table = $('#sampleTable').DataTable({});
-    $.ajax({
-        url: '/stock/data',  // Verilerin alındığı endpoint
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // Verileri tabloya ekle
-            for (var i = 0; i < data.length; i++) {
-                table.row.add([
-                    data[i].name,
-                    data[i].productcode,
-                    data[i].amount,
-                    data[i].marketname,
-                    data[i].marketcode,
-                    data[i].products_market_amount,
-                    data[i].storagename,
-                    data[i].storagecode,
-                    data[i].products_storage_amount,
-                ]).draw();
-            }
-        },
-        error: function(error) {
-            console.error('Veri alınamadı:', error);
-        }
-    });
-});
-</script>
+<script src="js/stocktable.js"></script>
 </body>
 </html>
